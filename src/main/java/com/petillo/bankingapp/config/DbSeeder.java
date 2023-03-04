@@ -24,17 +24,17 @@ public class DbSeeder implements CommandLineRunner {
     public void run(String... args) throws Exception{
 
         //Account Seeding
-        Account a1 = new Account(1, 100.00, "Checking", "client1");
-        Account a2 = new Account(2, 12300.00, "Saving", "client1");
-        Account a3 = new Account(3, 500.00, "Checking", "client2");
+        Account a1 = new Account(100.00, "Checking", 1);
+        Account a2 = new Account(12300.00, "Saving", 1);
+        Account a3 = new Account(500.00, "Checking", 2);
 
         this.accountRepo.save(a1);
         this.accountRepo.save(a2);
         this.accountRepo.save(a3);
 
         //Client Seeding
-        Client c1 = new Client("123", "Michael", "Jordan");
-        Client c2 = new Client("456", "Larry", "Bird");
+        Client c1 = new Client("Michael", "Jordan");
+        Client c2 = new Client("Larry", "Bird");
 
         this.clientRepo.save(c1);
         this.clientRepo.save(c2);

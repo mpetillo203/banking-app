@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface AccountRepo extends JpaRepository<Account, Integer> {
 
-    List<Account> findAllByClientId(String clientId);
+    List<Account> findAllByClientId(int clientId);
 }

@@ -3,12 +3,14 @@ package com.petillo.bankingapp.controllers;
 import com.petillo.bankingapp.models.Account;
 import com.petillo.bankingapp.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/accounts/")
+@RequestMapping("/accounts")
 public class AccountController {
 
     private final AccountService accountService;
@@ -19,7 +21,7 @@ public class AccountController {
     }
 
     @GetMapping("/{accountNum}")
-    public Account getAccountById(@PathVariable int accountNum){
+    public Account getAccountByAccountNum(@PathVariable("accountNum") int accountNum) throws ResponseStatusException {
         return accountService.getAccountByAccountNum(accountNum);
     }
 
@@ -29,7 +31,7 @@ public class AccountController {
     }
 
     @GetMapping("/clients/{id}")
-    public List<Account> getAllAccountsByClientId(@PathVariable String id){
+    public List<Account> getAllAccountsByClientId(@PathVariable("id") int id){
         return accountService.getAllAccountsByClientId(id);
     }
 
@@ -39,12 +41,29 @@ public class AccountController {
     }
 
     @PutMapping("/{accountNum}")
-    public Account updateAccount(@PathVariable int accountNum, @RequestBody Account updatedAccount){
-        return accountService.updateAccount(updatedAccount);
+    public Account updateAccount(@PathVariable("accountNum") int accountNum, @RequestBody Account updatedAccount) throws ResponseStatusException {
+        return accountService.updateAccount(accountNum, updatedAccount);
     }
 
     @DeleteMapping("/{accountNum}")
-    public void deleteAccountById(@PathVariable int accountNum){
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteAccountById(@PathVariable("accountNum") int accountNum) throws ResponseStatusException{
         accountService.deleteAccountByAcctNum(accountNum);
     }
+
+    @PatchMapping("{accountNum}/deposit")
+    public Account deposit(@PathVariable("accountNum") int accountNum, @RequestParam double deposit) throws ResponseStatusException {
+        return accountService.deposit(accountNum, deposit);
+    }
+
+    @PatchMapping("{accountNum}/withdraw")
+    public Account withdraw(@PathVariable("accountNum") int accountNum, @RequestParam double withdraw) throws ResponseStatusException {
+        return accountService.withdraw(accountNum, withdraw);
+    }
+
+    @PatchMapping("/{senderAccountNum}/transfer/{recipientAccountNum}")
+    public Account transfer(@PathVariable("senderAccountNum") int senderAcctNum, @PathVariable("recipientAccountNum") int recipientAcctNum, @RequestParam double transfer) throws ResponseStatusException {
+        return accountService.transfer(senderAcctNum, recipientAcctNum, transfer);
+    }
+
 }

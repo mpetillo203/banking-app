@@ -1,10 +1,12 @@
 package com.petillo.bankingapp.models;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
 
 @Data
 @AllArgsConstructor
@@ -13,9 +15,16 @@ import org.springframework.data.annotation.Id;
 public class Account {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int accountNum;
+
     private double accountBal;
     private String accountType;
-    private String clientId;
+    private int clientId;
 
+    public Account(double accountBal, String accountType, int clientId) {
+        this.accountBal = accountBal;
+        this.accountType = accountType;
+        this.clientId = clientId;
+    }
 }

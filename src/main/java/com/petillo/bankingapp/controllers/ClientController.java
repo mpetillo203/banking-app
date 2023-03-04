@@ -3,7 +3,9 @@ package com.petillo.bankingapp.controllers;
 import com.petillo.bankingapp.models.Client;
 import com.petillo.bankingapp.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -19,29 +21,28 @@ public class ClientController {
     }
 
     @GetMapping("/{id}")
-    public Client getClientById(@PathVariable String id){
+    public Client getClientById(@PathVariable("id") int id) throws ResponseStatusException{
         return clientService.getClientById(id);
     }
 
     @GetMapping
     public List<Client> getAllClients(){
-        System.out.println("in the client controller get all method");
         return clientService.getAllClients();
     }
 
     @PostMapping
     public Client addClient(@RequestBody Client newClient){
-        System.out.println("in the client controller post method");
         return clientService.addClient(newClient);
     }
 
     @PutMapping("/{id}")
-    public Client updateClient(@PathVariable String id, @RequestBody Client updatedClient){
-        return clientService.updateClient(updatedClient);
+    public Client updateClient(@PathVariable("id") int id, @RequestBody Client updatedClient) throws ResponseStatusException{
+        return clientService.updateClient(id, updatedClient);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteClientById(@PathVariable String id){
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteClientById(@PathVariable("id") int id) throws ResponseStatusException {
         clientService.deleteClientById(id);
     }
 }
